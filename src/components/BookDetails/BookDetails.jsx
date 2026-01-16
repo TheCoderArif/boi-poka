@@ -1,13 +1,29 @@
 import { useLoaderData, useParams } from "react-router-dom";
+import { setDataToLS } from "../../utilities/utilities";
+import { setWishList } from "../../utilities/wishList";
+import { setReadBookList, setWishBooksList } from "../../utilities/LocalStorage";
+import { toast } from "react-toastify";
 
 const BookDetails = () => {
   const { bookId } = useParams();
   const id = parseInt(bookId);
   const books = useLoaderData();
   const book = books.find((book) => book.bookId === id);
-  console.log(book);
+  // console.log(book);
   const {author, bookId: currentBookId, bookName, category, image, publisher, rating, review, tags, totalPages, yearOfPublishing} = book;
-  return (
+
+  const handleRead = (id) => {
+    setDataToLS(id)
+    setReadBookList(id)
+    toast('Added to Read List')
+  }
+
+  const handleWishList = id => {
+    setWishList(id)
+    setWishBooksList(id)
+    toast('Added to wish List')
+  }
+    return (
     <div>
       <div className="hero bg-base-200 min-h-screen">
         <div className="hero-content flex-col lg:flex-row">
@@ -48,8 +64,9 @@ const BookDetails = () => {
               excepturi exercitationem quasi. In deleniti eaque aut repudiandae
               et a id nisi.
             </p> */}
-            <button className=" mt-2 btn btn-soft mr-3">Read</button>
-            <button className=" mt-2 btn btn-primary">Wishlist</button>
+            <button onClick={() => handleRead(currentBookId)} className=" mt-2 btn btn-soft mr-3">Read</button>
+
+            <button onClick={()=>handleWishList(currentBookId)} className=" mt-2 btn btn-primary">Wishlist</button>
           </div>
         </div>
       </div>
